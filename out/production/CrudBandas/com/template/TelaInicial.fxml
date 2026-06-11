@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="522.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.template.TelaInicialController">
+   <children>
+      <ImageView fitHeight="531.0" fitWidth="608.0" layoutY="-4.0" pickOnBounds="true">
+         <image>
+            <Image url="@../../Images/fotolinda.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="btnComecar" layoutX="213.0" layoutY="262.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="175.0" text="Começar cadastros">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Label alignment="CENTER" layoutX="24.0" layoutY="162.0" prefHeight="40.0" prefWidth="561.0" style="-fx-background-color: #FFF;" text="O MELHOR APLICATIVO PARA CADASTRAR BANDAS DE TODO O MUNDO" textAlignment="CENTER">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="217.0" layoutY="115.0" style="-fx-background-color: #FFF;" text="BANDAS123">
+         <font>
+            <Font size="32.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="127.0" fitWidth="247.0" layoutX="192.0" layoutY="358.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../Images/hq720.jpg" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
