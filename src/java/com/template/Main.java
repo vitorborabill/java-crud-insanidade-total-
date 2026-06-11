@@ -10,7 +10,7 @@ public class Main extends Application
     @Override
     public void start(Stage stage) throws Exception
     {
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("main.fxml"));
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("TelaInicial.fxml"));
         Scene scene = new Scene(loader.load(),600,522);
 
         stage.setTitle("Java RESENHEIRO");

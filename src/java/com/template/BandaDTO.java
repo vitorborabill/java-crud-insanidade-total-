@@ -5,7 +5,13 @@ public class BandaDTO {
     private String nome;
     private String origem;
     private int anoFormacao;
+    private boolean eDaResenha;
 
+
+    public BandaDTO() {
+    }
+
+    // Getters e Setters
     public int getId() {
         return id;
     }
@@ -36,5 +42,13 @@ public class BandaDTO {
 
     public void setAnoFormacao(int anoFormacao) {
         this.anoFormacao = anoFormacao;
+    }
+
+    public boolean isEDaResenha() {
+        return eDaResenha;
+    }
+
+    public void setEDaResenha(boolean eDaResenha) {
+        this.eDaResenha = eDaResenha;
     }
 }
