@@ -28,7 +28,7 @@
             <children>
                 <ImageView fitHeight="522.0" fitWidth="600.0" pickOnBounds="true">
                     <image>
-                        <Image url="@../../Images/sued.png" />
+                        <Image url="@../../Images/fotolinda.png" />
                     </image>
                     <effect>
                         <ColorAdjust />
@@ -54,7 +54,7 @@
                         <TableColumn fx:id="colId" editable="false" prefWidth="55.0" text="ID" />
                         <TableColumn fx:id="colNome" editable="false" prefWidth="140.0" text="Nome" />
                         <TableColumn fx:id="colOrigem" editable="false" prefWidth="124.0" text="Origem" />
-                        <TableColumn fx:id="colAnoFormacao" editable="false" prefWidth="118.0" text="Ano de Formação" />
+                        <TableColumn fx:id="colAnoOrigem" editable="false" prefWidth="118.0" text="Ano de Origem" />
                         <TableColumn fx:id="colResenheira" editable="false" prefWidth="118.0" text="Resenheira" />
                     </columns>
                 </TableView>
@@ -107,14 +107,14 @@
                                 <Font name="System Bold" size="13.0" />
                             </font>
                         </Label>
-                        <TextField fx:id="txtAnoFormacao" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label text="Ano Formação" GridPane.rowIndex="3">
+                        <TextField fx:id="txtAnoOrigem" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label text="Ano Origem" GridPane.rowIndex="3">
                             <font>
                                 <Font name="System Bold" size="13.0" />
                             </font>
-                     <effect>
-                        <Blend />
-                     </effect>
+                            <effect>
+                                <Blend />
+                            </effect>
                         </Label>
                         <Label prefHeight="19.0" prefWidth="103.0" text="É DA RESENHA?" GridPane.rowIndex="4">
                             <font>
@@ -127,9 +127,9 @@
                             </cursor>
                         </CheckBox>
                     </children>
-               <cursor>
-                  <Cursor fx:constant="CROSSHAIR" />
-               </cursor>
+                    <cursor>
+                        <Cursor fx:constant="CROSSHAIR" />
+                    </cursor>
                 </GridPane>
                 <Button fx:id="btnLimpar" layoutX="472.0" layoutY="126.0" mnemonicParsing="false" onAction="#btnLimparActon" prefHeight="53.0" prefWidth="96.0" style="-fx-background-color: #b45eff;" text="Limpar" textAlignment="RIGHT" textFill="#0d0000" textOverrun="CENTER_ELLIPSIS">
                     <font>
@@ -141,7 +141,7 @@
                 </Button>
                 <ImageView fx:id="imgSadan" fitHeight="201.0" fitWidth="125.0" layoutX="13.0" layoutY="73.0" pickOnBounds="true" preserveRatio="true" visible="false">
                     <image>
-                        <Image url="@../../Images/sadanBONZIN.png" />
+                        <Image url="@../../Images/4436481.png" />
                     </image>
                 </ImageView>
             </children>

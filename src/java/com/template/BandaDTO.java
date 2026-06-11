@@ -4,14 +4,12 @@ public class BandaDTO {
     private int id;
     private String nome;
     private String origem;
-    private int anoFormacao;
+    private int anoOrigem;
     private boolean eDaResenha;
-
 
     public BandaDTO() {
     }
 
-    // Getters e Setters
     public int getId() {
         return id;
     }
@@ -36,12 +34,12 @@ public class BandaDTO {
         this.origem = origem;
     }
 
-    public int getAnoFormacao() {
-        return anoFormacao;
+    public int getAnoOrigem() {
+        return anoOrigem;
     }
 
-    public void setAnoFormacao(int anoFormacao) {
-        this.anoFormacao = anoFormacao;
+    public void setAnoOrigem(int anoOrigem) {
+        this.anoOrigem = anoOrigem;
     }
 
     public boolean isEDaResenha() {

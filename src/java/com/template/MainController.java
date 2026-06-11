@@ -21,14 +21,14 @@ public class MainController {
     @FXML private TextField txtId;
     @FXML private TextField txtNome;
     @FXML private TextField txtOrigem;
-    @FXML private TextField txtAnoFormacao;
+    @FXML private TextField txtAnoOrigem;
     @FXML private CheckBox chkResenha;
     @FXML private ImageView imgSadan;
     @FXML private TableView<BandaDTO> tblBanda;
     @FXML private TableColumn<BandaDTO, Integer> colId;
     @FXML private TableColumn<BandaDTO, String> colNome;
     @FXML private TableColumn<BandaDTO, String> colOrigem;
-    @FXML private TableColumn<BandaDTO, Integer> colAnoFormacao;
+    @FXML private TableColumn<BandaDTO, Integer> colAnoOrigem;
     @FXML private TableColumn<BandaDTO, Boolean> colResenheira;
 
     @FXML
@@ -42,13 +42,13 @@ public class MainController {
     private void btnSalvarAction(ActionEvent event) {
         String nome = txtNome.getText();
         String origem = txtOrigem.getText();
-        int anoFormacao = Integer.parseInt(txtAnoFormacao.getText());
+        int anoOrigem = Integer.parseInt(txtAnoOrigem.getText());
         boolean eDaResenha = chkResenha.isSelected();
 
         BandaDTO objbandadto = new BandaDTO();
         objbandadto.setNome(nome);
         objbandadto.setOrigem(origem);
-        objbandadto.setAnoFormacao(anoFormacao);
+        objbandadto.setAnoOrigem(anoOrigem);
         objbandadto.setEDaResenha(eDaResenha);
 
         BandaDAO objbandadao = new BandaDAO();
@@ -69,7 +69,7 @@ public class MainController {
         txtId.setText("");
         txtNome.setText("");
         txtOrigem.setText("");
-        txtAnoFormacao.setText("");
+        txtAnoOrigem.setText("");
         chkResenha.setSelected(false);
     }
 
@@ -80,7 +80,7 @@ public class MainController {
         if (bandadto != null) {
             bandadto.setNome(txtNome.getText());
             bandadto.setOrigem(txtOrigem.getText());
-            bandadto.setAnoFormacao(Integer.parseInt(txtAnoFormacao.getText()));
+            bandadto.setAnoOrigem(Integer.parseInt(txtAnoOrigem.getText()));
             bandadto.setEDaResenha(chkResenha.isSelected());
 
             BandaDAO objbandadao = new BandaDAO();
@@ -109,7 +109,7 @@ public class MainController {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         colOrigem.setCellValueFactory(new PropertyValueFactory<>("origem"));
-        colAnoFormacao.setCellValueFactory(new PropertyValueFactory<>("anoFormacao"));
+        colAnoOrigem.setCellValueFactory(new PropertyValueFactory<>("anoOrigem"));
         colResenheira.setCellValueFactory(new PropertyValueFactory<>("eDaResenha"));
 
         colResenheira.setCellFactory(tc -> new TableCell<BandaDTO, Boolean>() {
@@ -135,7 +135,7 @@ public class MainController {
                 txtId.setText(String.valueOf(newSelection.getId()));
                 txtNome.setText(newSelection.getNome());
                 txtOrigem.setText(newSelection.getOrigem());
-                txtAnoFormacao.setText(String.valueOf(newSelection.getAnoFormacao()));
+                txtAnoOrigem.setText(String.valueOf(newSelection.getAnoOrigem()));
                 chkResenha.setSelected(newSelection.isEDaResenha());
             }
         });
