@@ -12,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import java.util.ArrayList;
+import javafx.scene.control.Label;
 
 public class MainController {
     @FXML private Button btnDeletar;
@@ -30,6 +31,7 @@ public class MainController {
     @FXML private TableColumn<BandaDTO, String> colOrigem;
     @FXML private TableColumn<BandaDTO, Integer> colAnoOrigem;
     @FXML private TableColumn<BandaDTO, Boolean> colResenheira;
+    @FXML private Label lblAviso;
 
     @FXML
     private void carregarBandas() {
@@ -40,28 +42,33 @@ public class MainController {
 
     @FXML
     private void btnSalvarAction(ActionEvent event) {
-        String nome = txtNome.getText();
-        String origem = txtOrigem.getText();
-        int anoOrigem = Integer.parseInt(txtAnoOrigem.getText());
-        boolean eDaResenha = chkResenha.isSelected();
+        try {
+            String nome = txtNome.getText();
+            String origem = txtOrigem.getText();
+            int anoOrigem = Integer.parseInt(txtAnoOrigem.getText());
+            boolean eDaResenha = chkResenha.isSelected();
 
-        BandaDTO objbandadto = new BandaDTO();
-        objbandadto.setNome(nome);
-        objbandadto.setOrigem(origem);
-        objbandadto.setAnoOrigem(anoOrigem);
-        objbandadto.setEDaResenha(eDaResenha);
+            BandaDTO objbandadto = new BandaDTO();
+            objbandadto.setNome(nome);
+            objbandadto.setOrigem(origem);
+            objbandadto.setAnoOrigem(anoOrigem);
+            objbandadto.setEDaResenha(eDaResenha);
 
-        BandaDAO objbandadao = new BandaDAO();
-        boolean salvou = objbandadao.cadastrarBanda(objbandadto);
+            BandaDAO objbandadao = new BandaDAO();
+            boolean salvou = objbandadao.cadastrarBanda(objbandadto);
 
-        if (salvou) {
-            imgSadan.setVisible(true);
-            javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(javafx.util.Duration.seconds(2));
-            pause.setOnFinished(e -> imgSadan.setVisible(false));
-            pause.play();
+            if (salvou) {
+                imgSadan.setVisible(true);
+                javafx.animation.PauseTransition pause = new javafx.animation.PauseTransition(javafx.util.Duration.seconds(2));
+                pause.setOnFinished(e -> imgSadan.setVisible(false));
+                pause.play();
+            }
+            carregarBandas();
+            btnLimparActon(null);
+
+        } catch (NumberFormatException e) {
+            lblAviso.setText("O ano de origem deve conter apenas números!");
         }
-        carregarBandas();
-        btnLimparActon(null);
     }
 
     @FXML
@@ -71,6 +78,7 @@ public class MainController {
         txtOrigem.setText("");
         txtAnoOrigem.setText("");
         chkResenha.setSelected(false);
+        lblAviso.setText("");
     }
 
     @FXML
@@ -78,16 +86,21 @@ public class MainController {
         BandaDTO bandadto = tblBanda.getSelectionModel().getSelectedItem();
 
         if (bandadto != null) {
-            bandadto.setNome(txtNome.getText());
-            bandadto.setOrigem(txtOrigem.getText());
-            bandadto.setAnoOrigem(Integer.parseInt(txtAnoOrigem.getText()));
-            bandadto.setEDaResenha(chkResenha.isSelected());
+            try {
+                bandadto.setNome(txtNome.getText());
+                bandadto.setOrigem(txtOrigem.getText());
+                bandadto.setAnoOrigem(Integer.parseInt(txtAnoOrigem.getText()));
+                bandadto.setEDaResenha(chkResenha.isSelected());
 
-            BandaDAO objbandadao = new BandaDAO();
-            objbandadao.atualizarBanda(bandadto);
+                BandaDAO objbandadao = new BandaDAO();
+                objbandadao.atualizarBanda(bandadto);
 
-            carregarBandas();
-            btnLimparActon(null);
+                carregarBandas();
+                btnLimparActon(null);
+
+            } catch (NumberFormatException e) {
+                lblAviso.setText("Não foi possível editar. O ano deve ser apenas números!");
+            }
         }
     }
 
@@ -137,6 +150,7 @@ public class MainController {
                 txtOrigem.setText(newSelection.getOrigem());
                 txtAnoOrigem.setText(String.valueOf(newSelection.getAnoOrigem()));
                 chkResenha.setSelected(newSelection.isEDaResenha());
+                lblAviso.setText("");
             }
         });
 
