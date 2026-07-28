@@ -1,8 +1,9 @@
-package com.template;
+package com.template.model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
 
 //essa classe estabelece a conexão com o banco de dados
 public class Conexao {

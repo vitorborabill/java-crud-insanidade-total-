@@ -1,4 +1,7 @@
-package com.template;
+package com.template.model.dao;
+
+import com.template.model.dto.BandaDTO;
+import com.template.model.Conexao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,6 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static com.template.util.DialogUtil.showInfo;
 
 public class BandaDAO {
     private static final Logger logger = Logger.getLogger(BandaDAO.class.getName());
@@ -34,6 +38,7 @@ public class BandaDAO {
             }
         } catch (SQLException erro) {
             logger.log(Level.SEVERE, "Erro ao listar banda", erro);
+            showInfo("ok");
         }
 
         return ListaBandas;
@@ -54,6 +59,7 @@ public class BandaDAO {
             return true;
         } catch (SQLException erro) {
             logger.log(Level.SEVERE, "Erro ao cadastrar banda", erro);
+            showInfo("ok");
             return false;
         }
     }
@@ -73,6 +79,7 @@ public class BandaDAO {
             comando.execute();
         } catch (SQLException erro) {
             logger.log(Level.SEVERE, "Erro ao atualizar banda", erro);
+            showInfo("ok");
         }
     }
 
@@ -87,6 +94,7 @@ public class BandaDAO {
             comando.execute();
         } catch (SQLException erro) {
             logger.log(Level.SEVERE, "Erro ao deletar banda", erro);
+            showInfo("ok");
         }
     }
 }
