@@ -19,28 +19,47 @@ import static com.template.validator.BandaValidator.validarBanda;
 
 public class MainController {
 
-    @FXML private Button btnSalvar;
-    @FXML private Button btnEditar;
-    @FXML private Button btnDeletar;
-    @FXML private Button btnLimpar;
+    @FXML
+    private Button btnSalvar;
+    @FXML
+    private Button btnEditar;
+    @FXML
+    private Button btnDeletar;
+    @FXML
+    private Button btnLimpar;
 
-    @FXML private TextField txtId;
-    @FXML private TextField txtNome;
-    @FXML private TextField txtOrigem;
-    @FXML private TextField txtAnoOrigem;
-    @FXML private CheckBox chkResenha;
-    @FXML private ImageView imgSadan;
+    @FXML
+    private TextField txtId;
+    @FXML
+    private TextField txtNome;
+    @FXML
+    private TextField txtOrigem;
+    @FXML
+    private TextField txtAnoOrigem;
+    @FXML
+    private CheckBox chkResenha;
+    @FXML
+    private ImageView imgSadan;
 
-    @FXML private TableView<BandaDTO> tblBanda;
-    @FXML private TableColumn<BandaDTO, Integer> colId;
-    @FXML private TableColumn<BandaDTO, String> colNome;
-    @FXML private TableColumn<BandaDTO, String> colOrigem;
-    @FXML private TableColumn<BandaDTO, Integer> colAnoOrigem;
-    @FXML private TableColumn<BandaDTO, Boolean> colResenheira;
+    @FXML
+    private TableView<BandaDTO> tblBanda;
+    @FXML
+    private TableColumn<BandaDTO, Integer> colId;
+    @FXML
+    private TableColumn<BandaDTO, String> colNome;
+    @FXML
+    private TableColumn<BandaDTO, String> colOrigem;
+    @FXML
+    private TableColumn<BandaDTO, Integer> colAnoOrigem;
+    @FXML
+    private TableColumn<BandaDTO, Boolean> colResenheira;
 
-    @FXML private Label lblAviso;
-    @FXML private Label lblValidacao;
-    @FXML private Label lblMensagemDados;
+    @FXML
+    private Label lblAviso;
+    @FXML
+    private Label lblValidacao;
+    @FXML
+    private Label lblMensagemDados;
 
     @FXML
     public void initialize() {
