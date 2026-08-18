@@ -9,11 +9,7 @@ import java.util.ArrayList;
 
 public class BandaService {
 
-    private final BandaDAO bandaDAO;
-
-    public BandaService() {
-        this.bandaDAO = new BandaDAO();
-    }
+    private final BandaDAO bandaDAO = new BandaDAO();
 
     public static class ResultadoOperacao {
         private final boolean sucesso;
@@ -37,26 +33,26 @@ public class BandaService {
         return bandaDAO.selecionarBanda();
     }
 
-    public ResultadoOperacao cadastrar(String nome, String origem, String anoOrigemTexto, boolean eDaResenha) {
+    public ResultadoOperacao cadastrarBanda(String nome, String origem, String anoOrigemTexto, boolean eDaResenha) {
         ResultadoValidacao validacao = BandaValidator.validarBanda(nome, origem, anoOrigemTexto);
         if (!validacao.isValido()) {
             return new ResultadoOperacao(false, validacao.getMensagem());
         }
 
-        BandaDTO banda = new BandaDTO();
-        banda.setNome(nome.trim());
-        banda.setOrigem(origem.trim());
-        banda.setAnoOrigem(Integer.parseInt(anoOrigemTexto.trim()));
-        banda.setEDaResenha(eDaResenha);
+        BandaDTO novaBanda = new BandaDTO();
+        novaBanda.setNome(nome.trim());
+        novaBanda.setOrigem(origem.trim());
+        novaBanda.setAnoOrigem(Integer.parseInt(anoOrigemTexto.trim()));
+        novaBanda.setEDaResenha(eDaResenha);
 
-        boolean salvou = bandaDAO.cadastrarBanda(banda);
-        return salvou
+        boolean cadastrou = bandaDAO.cadastrarBanda(novaBanda);
+        return cadastrou
                 ? new ResultadoOperacao(true, "Banda cadastrada com sucesso!")
                 : new ResultadoOperacao(false, "Não foi possível cadastrar a banda.");
     }
 
-    public ResultadoOperacao atualizar(BandaDTO bandaSelecionada, String nome, String origem,
-                                       String anoOrigemTexto, boolean eDaResenha) {
+    public ResultadoOperacao atualizarBanda(BandaDTO bandaSelecionada, String nome, String origem,
+                                            String anoOrigemTexto, boolean eDaResenha) {
         ResultadoValidacao validacao = BandaValidator.validarBanda(nome, origem, anoOrigemTexto);
         if (!validacao.isValido()) {
             return new ResultadoOperacao(false, validacao.getMensagem());
@@ -71,7 +67,7 @@ public class BandaService {
         return new ResultadoOperacao(true, "Banda atualizada com sucesso!");
     }
 
-    public ResultadoOperacao deletar(BandaDTO bandaSelecionada) {
+    public ResultadoOperacao deletarBanda(BandaDTO bandaSelecionada) {
         if (bandaSelecionada == null) {
             return new ResultadoOperacao(false, "Selecione uma banda para deletar!");
         }
@@ -79,4 +75,3 @@ public class BandaService {
         return new ResultadoOperacao(true, "Banda deletada com sucesso!");
     }
 }
-//crediaria

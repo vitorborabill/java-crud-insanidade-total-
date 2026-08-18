@@ -82,20 +82,20 @@ public class MainController {
 
     @FXML
     private void btnSalvarAction(ActionEvent event) {
-        ResultadoOperacao resultado = bandaService.cadastrar(
+        ResultadoOperacao resultadoCadastro = bandaService.cadastrarBanda(
                 txtNome.getText().trim(),
                 txtOrigem.getText().trim(),
                 txtAnoOrigem.getText().trim(),
                 chkResenha.isSelected()
         );
 
-        if (!resultado.isSucesso()) {
-            exibirErroValidacao(resultado.getMensagem());
+        if (!resultadoCadastro.isSucesso()) {
+            exibirErroValidacao(resultadoCadastro.getMensagem());
             return;
         }
 
         exibirConfirmacaoVisual();
-        mostrarInfo(resultado.getMensagem());
+        mostrarInfo(resultadoCadastro.getMensagem());
         carregarBandas();
         btnLimparAction(null);
     }
@@ -109,7 +109,7 @@ public class MainController {
             return;
         }
 
-        ResultadoOperacao resultado = bandaService.atualizar(
+        ResultadoOperacao resultadoEdicao = bandaService.atualizarBanda(
                 bandaSelecionada,
                 txtNome.getText().trim(),
                 txtOrigem.getText().trim(),
@@ -117,29 +117,29 @@ public class MainController {
                 chkResenha.isSelected()
         );
 
-        if (!resultado.isSucesso()) {
-            exibirErroValidacao(resultado.getMensagem());
+        if (!resultadoEdicao.isSucesso()) {
+            exibirErroValidacao(resultadoEdicao.getMensagem());
             return;
         }
 
         carregarBandas();
         btnLimparAction(null);
-        mostrarInfo(resultado.getMensagem());
+        mostrarInfo(resultadoEdicao.getMensagem());
     }
 
     @FXML
     private void btnDeletarAction(ActionEvent event) {
         BandaDTO bandaSelecionada = tblBanda.getSelectionModel().getSelectedItem();
-        ResultadoOperacao resultado = bandaService.deletar(bandaSelecionada);
+        ResultadoOperacao resultadoExclusao = bandaService.deletarBanda(bandaSelecionada);
 
-        if (!resultado.isSucesso()) {
-            mostrarErro(resultado.getMensagem());
+        if (!resultadoExclusao.isSucesso()) {
+            mostrarErro(resultadoExclusao.getMensagem());
             return;
         }
 
         carregarBandas();
         btnLimparAction(null);
-        mostrarInfo(resultado.getMensagem());
+        mostrarInfo(resultadoExclusao.getMensagem());
     }
 
     @FXML
