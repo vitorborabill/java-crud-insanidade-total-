@@ -1,7 +1,8 @@
 package com.template.controller;
 
-import com.template.model.dao.BandaDAO;
 import com.template.model.dto.BandaDTO;
+import com.template.service.BandaService;
+import com.template.service.BandaService.ResultadoOperacao;
 import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -11,11 +12,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
-import java.util.ArrayList;
-
 import static com.template.util.DialogUtil.mostrarErro;
 import static com.template.util.DialogUtil.mostrarInfo;
-import static com.template.validator.BandaValidator.validarBanda;
 
 public class MainController {
 
@@ -42,29 +40,15 @@ public class MainController {
     @FXML private Label lblValidacao;
     @FXML private Label lblMensagemDados;
 
+    private final BandaService bandaService = new BandaService();
+
     @FXML
     public void initialize() {
         if (lblValidacao != null) lblValidacao.setVisible(false);
         if (lblMensagemDados != null) lblMensagemDados.setVisible(false);
         if (imgSadan != null) imgSadan.setVisible(false);
 
-        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
-        colOrigem.setCellValueFactory(new PropertyValueFactory<>("origem"));
-        colAnoOrigem.setCellValueFactory(new PropertyValueFactory<>("anoOrigem"));
-        colResenheira.setCellValueFactory(new PropertyValueFactory<>("eDaResenha"));
-
-        colResenheira.setCellFactory(tc -> new TableCell<BandaDTO, Boolean>() {
-            @Override
-            protected void updateItem(Boolean item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setText(null);
-                } else {
-                    setText(item ? "Sim" : "Não");
-                }
-            }
-        });
+        configurarColunasTabela();
 
         btnEditar.disableProperty().bind(txtNome.textProperty().isEmpty());
         btnDeletar.disableProperty().bind(txtNome.textProperty().isEmpty());
@@ -80,81 +64,82 @@ public class MainController {
         carregarBandas();
     }
 
+    private void configurarColunasTabela() {
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        colOrigem.setCellValueFactory(new PropertyValueFactory<>("origem"));
+        colAnoOrigem.setCellValueFactory(new PropertyValueFactory<>("anoOrigem"));
+        colResenheira.setCellValueFactory(new PropertyValueFactory<>("eDaResenha"));
+
+        colResenheira.setCellFactory(tc -> new TableCell<BandaDTO, Boolean>() {
+            @Override
+            protected void updateItem(Boolean item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : (item ? "Sim" : "Não"));
+            }
+        });
+    }
+
     @FXML
     private void btnSalvarAction(ActionEvent event) {
-        if (!preencherCampos()) {
-            mostrarErro("Erro! Preencha todos os campos corretamente!");
+        ResultadoOperacao resultado = bandaService.cadastrar(
+                txtNome.getText().trim(),
+                txtOrigem.getText().trim(),
+                txtAnoOrigem.getText().trim(),
+                chkResenha.isSelected()
+        );
+
+        if (!resultado.isSucesso()) {
+            exibirErroValidacao(resultado.getMensagem());
             return;
         }
 
-        String nome = txtNome.getText().trim();
-        String origem = txtOrigem.getText().trim();
-        int anoOrigem = Integer.parseInt(txtAnoOrigem.getText().trim());
-        boolean eDaResenha = chkResenha.isSelected();
-
-        BandaDTO objbandadto = new BandaDTO();
-        objbandadto.setNome(nome);
-        objbandadto.setOrigem(origem);
-        objbandadto.setAnoOrigem(anoOrigem);
-        objbandadto.setEDaResenha(eDaResenha);
-
-        BandaDAO objbandadao = new BandaDAO();
-        boolean salvou = objbandadao.cadastrarBanda(objbandadto);
-
-        if (salvou) {
-            if (imgSadan != null) {
-                imgSadan.setVisible(true);
-                PauseTransition pause = new PauseTransition(Duration.seconds(2));
-                pause.setOnFinished(e -> imgSadan.setVisible(false));
-                pause.play();
-            }
-            mostrarInfo("Banda cadastrada com sucesso!");
-        }
-
+        exibirConfirmacaoVisual();
+        mostrarInfo(resultado.getMensagem());
         carregarBandas();
         btnLimparAction(null);
     }
 
     @FXML
     private void btnEditarAction(ActionEvent event) {
-        if (!preencherCampos()) {
-            mostrarErro("Erro! Preencha todos os campos corretamente!");
+        BandaDTO bandaSelecionada = tblBanda.getSelectionModel().getSelectedItem();
+
+        if (bandaSelecionada == null) {
+            mostrarErro("Selecione uma banda na tabela para editar.");
             return;
         }
 
-        BandaDTO bandaSelecionada = tblBanda.getSelectionModel().getSelectedItem();
+        ResultadoOperacao resultado = bandaService.atualizar(
+                bandaSelecionada,
+                txtNome.getText().trim(),
+                txtOrigem.getText().trim(),
+                txtAnoOrigem.getText().trim(),
+                chkResenha.isSelected()
+        );
 
-        if (bandaSelecionada != null) {
-            bandaSelecionada.setNome(txtNome.getText().trim());
-            bandaSelecionada.setOrigem(txtOrigem.getText().trim());
-            bandaSelecionada.setAnoOrigem(Integer.parseInt(txtAnoOrigem.getText().trim()));
-            bandaSelecionada.setEDaResenha(chkResenha.isSelected());
-
-            BandaDAO objbandadao = new BandaDAO();
-            objbandadao.atualizarBanda(bandaSelecionada);
-
-            carregarBandas();
-            btnLimparAction(null);
-            mostrarInfo("Banda atualizada com sucesso!");
-        } else {
-            mostrarErro("Selecione uma banda na tabela para editar.");
+        if (!resultado.isSucesso()) {
+            exibirErroValidacao(resultado.getMensagem());
+            return;
         }
+
+        carregarBandas();
+        btnLimparAction(null);
+        mostrarInfo(resultado.getMensagem());
     }
 
     @FXML
     private void btnDeletarAction(ActionEvent event) {
         BandaDTO bandaSelecionada = tblBanda.getSelectionModel().getSelectedItem();
+        ResultadoOperacao resultado = bandaService.deletar(bandaSelecionada);
 
-        if (bandaSelecionada != null) {
-            BandaDAO objbandadao = new BandaDAO();
-            objbandadao.deletarBanda(bandaSelecionada);
-
-            carregarBandas();
-            btnLimparAction(null);
-            mostrarInfo("Banda deletada com sucesso!");
-        } else {
-            mostrarErro("Selecione uma banda para deletar!");
+        if (!resultado.isSucesso()) {
+            mostrarErro(resultado.getMensagem());
+            return;
         }
+
+        carregarBandas();
+        btnLimparAction(null);
+        mostrarInfo(resultado.getMensagem());
     }
 
     @FXML
@@ -168,14 +153,10 @@ public class MainController {
         tblBanda.getSelectionModel().clearSelection();
     }
 
-    @FXML
     private void carregarBandas() {
-        BandaDAO objBandaDAO = new BandaDAO();
-        ArrayList<BandaDTO> listaBandas = objBandaDAO.selecionarBanda();
-        tblBanda.setItems(FXCollections.observableArrayList(listaBandas));
+        tblBanda.setItems(FXCollections.observableArrayList(bandaService.listarBandas()));
     }
 
-    @FXML
     private void carregarCampos() {
         BandaDTO bandaDto = tblBanda.getSelectionModel().getSelectedItem();
 
@@ -188,51 +169,24 @@ public class MainController {
         }
     }
 
-    private boolean verificarLetra(String texto) {
-        String regra = "^[a-zA-ZáéíóúàèìòùâêîôûãõçÇÁÉÍÓÚÀÈÌÒÙÂÊÎÔÛÃÕ0-9\\s]+$";
-        return texto.matches(regra);
+    private void exibirErroValidacao(String mensagem) {
+        mostrarErro(mensagem);
+        Label labelAlvo = lblValidacao != null ? lblValidacao : lblMensagemDados;
+        if (labelAlvo == null) return;
+
+        labelAlvo.setText(mensagem);
+        labelAlvo.setVisible(true);
+
+        PauseTransition pausa = new PauseTransition(Duration.seconds(3));
+        pausa.setOnFinished(e -> labelAlvo.setVisible(false));
+        pausa.play();
     }
 
-    private boolean preencherCampos() {
-        if (!validarBanda(txtNome.getText().trim(), txtOrigem.getText().trim(), txtAnoOrigem.getText().trim())) {
-            if (lblValidacao != null) {
-                lblValidacao.setText("Por favor, preencha todos os campos!");
-                lblValidacao.setVisible(true);
-
-                PauseTransition pausa = new PauseTransition(Duration.seconds(3));
-                pausa.setOnFinished(e -> lblValidacao.setVisible(false));
-                pausa.play();
-            }
-            return false;
-        }
-
-        if (!verificarLetra(txtNome.getText().trim())) {
-            if (lblValidacao != null) {
-                lblValidacao.setText("Erro: O nome contém caracteres inválidos.");
-                lblValidacao.setVisible(true);
-
-                PauseTransition pausa = new PauseTransition(Duration.seconds(3));
-                pausa.setOnFinished(ev -> lblValidacao.setVisible(false));
-                pausa.play();
-            }
-            return false;
-        }
-
-        try {
-            Integer.parseInt(txtAnoOrigem.getText().trim());
-        } catch (NumberFormatException e) {
-            mostrarErro("Erro de formato!");
-            if (lblMensagemDados != null) {
-                lblMensagemDados.setText("O ano de origem deve ser numérico!");
-                lblMensagemDados.setVisible(true);
-
-                PauseTransition pausa = new PauseTransition(Duration.seconds(3));
-                pausa.setOnFinished(ev -> lblMensagemDados.setVisible(false));
-                pausa.play();
-            }
-            return false;
-        }
-
-        return true;
+    private void exibirConfirmacaoVisual() {
+        if (imgSadan == null) return;
+        imgSadan.setVisible(true);
+        PauseTransition pause = new PauseTransition(Duration.seconds(2));
+        pause.setOnFinished(e -> imgSadan.setVisible(false));
+        pause.play();
     }
 }

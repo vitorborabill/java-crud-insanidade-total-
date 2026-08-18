@@ -16,7 +16,7 @@ public class TelaInicialController {
         btnComecar.setOnAction(event -> {
             try {
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("main.fxml"))));
+                stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/com/template/main.fxml"))));
             } catch (Exception e) {
                 e.printStackTrace();
             }

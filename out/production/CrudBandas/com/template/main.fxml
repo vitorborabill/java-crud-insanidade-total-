@@ -100,7 +100,7 @@
                         <Cursor fx:constant="CROSSHAIR" />
                     </cursor>
                 </Button>
-                <Button fx:id="btnLimpar" layoutX="472.0" layoutY="126.0" mnemonicParsing="false" onAction="#btnLimparActon" prefHeight="53.0" prefWidth="96.0" style="-fx-background-color: #b45eff;" text="Limpar" textAlignment="RIGHT" textFill="#0d0000" textOverrun="CENTER_ELLIPSIS">
+                <Button fx:id="btnLimpar" layoutX="472.0" layoutY="126.0" mnemonicParsing="false" onAction="#btnLimparAction" prefHeight="53.0" prefWidth="96.0" style="-fx-background-color: #b45eff;" text="Limpar" textAlignment="RIGHT" textFill="#0d0000" textOverrun="CENTER_ELLIPSIS">
                     <font>
                         <Font name="Comic Sans MS" size="14.0" />
                     </font>
