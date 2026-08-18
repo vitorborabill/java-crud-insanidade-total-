@@ -1,8 +1,9 @@
 package com.template.validator;
 
-public class BandaValidator {
+import java.util.ArrayList;
+import java.util.List;
 
-    private static final String REGRA_NOME = "^[a-zA-ZáéíóúàèìòùâêîôûãõçÇÁÉÍÓÚÀÈÌÒÙÂÊÎÔÛÃÕ0-9\\s]+$";
+public class BandaValidator {
 
     public static class ResultadoValidacao {
         private final boolean valido;
@@ -22,37 +23,21 @@ public class BandaValidator {
         }
     }
 
-    public static ResultadoValidacao validarCamposPreenchidos(String nome, String origem, String anoOrigem) {
-        if (nome.isEmpty() || origem.isEmpty() || anoOrigem.isEmpty()) {
-            return new ResultadoValidacao(false, "Por favor, preencha todos os campos!");
-        }
-        return new ResultadoValidacao(true, null);
-    }
-
-    public static ResultadoValidacao validarNome(String nome) {
-        if (!nome.matches(REGRA_NOME)) {
-            return new ResultadoValidacao(false, "Erro: O nome contém caracteres inválidos.");
-        }
-        return new ResultadoValidacao(true, null);
-    }
-
-    public static ResultadoValidacao validarAnoOrigem(String anoOrigem) {
-        try {
-            Integer.parseInt(anoOrigem);
-            return new ResultadoValidacao(true, null);
-        } catch (NumberFormatException e) {
-            return new ResultadoValidacao(false, "O ano de origem deve ser numérico!");
-        }
-    }
-
     public static ResultadoValidacao validarBanda(String nome, String origem, String anoOrigem) {
-        ResultadoValidacao camposPreenchidos = validarCamposPreenchidos(nome, origem, anoOrigem);
-        if (!camposPreenchidos.isValido()) return camposPreenchidos;
+        List<Validator<String>> validadores = new ArrayList<>();
 
-        ResultadoValidacao ano = validarAnoOrigem(anoOrigem);
-        if (!ano.isValido()) return ano;
+        validadores.add(new CampoObrigatorioValidador("Nome", nome));
+        validadores.add(new CampoObrigatorioValidador("Origem", origem));
+        validadores.add(new CampoObrigatorioValidador("Ano de origem", anoOrigem));
+        validadores.add(new NomeBandaValidador(nome));
+        validadores.add(new AnoOrigemValidador(anoOrigem));
 
-        return validarNome(nome);
+        for (Validator<String> validador : validadores) {
+            if (!validador.validar(validador.getValor())) {
+                return new ResultadoValidacao(false, validador.getMensagemErro());
+            }
+        }
+        return new ResultadoValidacao(true, null);
     }
 
     public static boolean validarTermo(String termo) {
